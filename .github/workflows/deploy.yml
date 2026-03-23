@@ -1,0 +1,47 @@
+name: Deploy Uniko to VPS
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd "${{ secrets.APP_DIR }}"
+
+            git config --global --add safe.directory "${{ secrets.APP_DIR }}"
+
+            # Configure Git credentials for private repo
+            git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/${{ secrets.GIT_REPO }}.git
+
+            git fetch --all
+            git reset --hard origin/main
+
+            # Install PHP dependencies
+            composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+
+            php artisan optimize:clear
+            php artisan storage:link || true
+
+            php artisan migrate --force
+
+            # Laravel optimizations
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan cache:clear
+
+            # Fix permissions
+            chmod -R 775 storage bootstrap/cache
+            chown -R www-data:www-data storage bootstrap/cache
