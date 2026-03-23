@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommuneController;
+use App\Http\Controllers\Admin\ContenantController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ParfumController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\SaleController;
@@ -57,7 +61,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     })->name('home');
 
     Route::resource('categories', CategoryController::class)->except(['show']);
+    Route::resource('parfums', ParfumController::class)->except(['show']);
+    Route::resource('contenants', ContenantController::class)->except(['show']);
+    Route::resource('communes', CommuneController::class)->except(['show']);
     Route::resource('products', ProductController::class)->except(['show']);
+
+    Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);
 
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');

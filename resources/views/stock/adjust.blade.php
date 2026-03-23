@@ -12,12 +12,17 @@
 
     <div class="card">
       <div class="card-body">
+        @if ($products->isEmpty())
+          <div class="alert alert-warning">
+            Aucun parfum à afficher. Crée d'abord des produits (parfums) dans la section Produits.
+          </div>
+        @endif
         <form method="POST" action="{{ route('admin.stock.adjust') }}">
           @csrf
 
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label class="form-label" for="product_id">Produit</label>
+              <label class="form-label" for="product_id">Parfum</label>
               <select id="product_id" name="product_id" class="form-select @error('product_id') is-invalid @enderror" required>
                 <option value="">—</option>
                 @foreach ($products as $p)
@@ -34,8 +39,8 @@
             <div class="col-md-3 mb-3">
               <label class="form-label" for="direction">Type</label>
               <select id="direction" name="direction" class="form-select @error('direction') is-invalid @enderror" required>
-                <option value="in" {{ old('direction') === 'in' ? 'selected' : '' }}>Entrée</option>
-                <option value="out" {{ old('direction') === 'out' ? 'selected' : '' }}>Sortie</option>
+                <option value="in" {{ old('direction', $direction ?? 'in') === 'in' ? 'selected' : '' }}>Entrée</option>
+                <option value="out" {{ old('direction', $direction ?? 'in') === 'out' ? 'selected' : '' }}>Sortie</option>
               </select>
               @error('direction')
                 <div class="invalid-feedback">{{ $message }}</div>

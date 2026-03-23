@@ -13,8 +13,11 @@ class Product extends Model
 
     protected $fillable = [
         'category_id',
+        'parfum_id',
+        'contenant_id',
         'name',
         'brand',
+        'image_path',
         'price',
         'quantity',
         'low_stock_threshold',
@@ -33,6 +36,16 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function parfum(): BelongsTo
+    {
+        return $this->belongsTo(Parfum::class);
+    }
+
+    public function contenant(): BelongsTo
+    {
+        return $this->belongsTo(Contenant::class);
     }
 
     public function saleItems(): HasMany

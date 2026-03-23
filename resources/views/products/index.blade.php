@@ -29,6 +29,7 @@
         <table class="table">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Nom</th>
               <th>Marque</th>
               <th>Catégorie</th>
@@ -41,6 +42,13 @@
           <tbody class="table-border-bottom-0">
             @forelse ($products as $product)
               <tr>
+                <td>
+                  @if ($product->image_path)
+                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" style="width: 52px; height: 52px; object-fit: cover;" class="rounded border">
+                  @else
+                    —
+                  @endif
+                </td>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->brand }}</td>
                 <td>{{ $product->category?->name ?? '—' }}</td>
@@ -66,7 +74,7 @@
               </tr>
             @empty
               <tr>
-                <td colspan="7" class="text-center text-body-secondary">Aucun produit.</td>
+                <td colspan="8" class="text-center text-body-secondary">Aucun produit.</td>
               </tr>
             @endforelse
           </tbody>

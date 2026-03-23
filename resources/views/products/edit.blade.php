@@ -12,7 +12,7 @@
 
     <div class="card">
       <div class="card-body">
-        <form method="POST" action="{{ route('admin.products.update', $product) }}">
+        <form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data">
           @csrf
           @method('PUT')
 
@@ -49,6 +49,21 @@
             </div>
 
             <div class="col-md-6 mb-3">
+              <label class="form-label" for="contenant_id">Contenant (ml)</label>
+              <select id="contenant_id" name="contenant_id" class="form-select @error('contenant_id') is-invalid @enderror">
+                <option value="">—</option>
+                @foreach ($contenants as $c)
+                  <option value="{{ $c->id }}" data-prix="{{ $c->prix }}" {{ (string) old('contenant_id', $product->contenant_id) === (string) $c->id ? 'selected' : '' }}>
+                    {{ $c->type_contenant }} · {{ $c->ml }}ml
+                  </option>
+                @endforeach
+              </select>
+              @error('contenant_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
+
+            <div class="col-md-6 mb-3">
               <label class="form-label" for="price">Prix</label>
               <input type="number" step="0.01" min="0" id="price" name="price" value="{{ old('price', $product->price) }}" class="form-control @error('price') is-invalid @enderror" required>
               @error('price')
@@ -68,6 +83,25 @@
               <label class="form-label" for="low_stock_threshold">Seuil stock min</label>
               <input type="number" min="0" id="low_stock_threshold" name="low_stock_threshold" value="{{ old('low_stock_threshold', $product->low_stock_threshold) }}" class="form-control @error('low_stock_threshold') is-invalid @enderror" required>
               @error('low_stock_threshold')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="image">Image</label>
+
+              @if ($product->image_path)
+                <div class="mb-2">
+                  <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" style="max-width: 160px; height: auto;" class="rounded border">
+                </div>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="remove_image" name="remove_image" value="1" {{ old('remove_image') ? 'checked' : '' }}>
+                  <label class="form-check-label" for="remove_image">Supprimer l'image</label>
+                </div>
+              @endif
+
+              <input type="file" id="image" name="image" accept="image/*" class="form-control @error('image') is-invalid @enderror">
+              @error('image')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
             </div>
@@ -93,6 +127,24 @@
 
           <button class="btn btn-primary" type="submit">Mettre à jour</button>
         </form>
+
+        <script>
+          (function () {
+            var contenant = document.getElementById('contenant_id');
+            var price = document.getElementById('price');
+            if (!contenant || !price) return;
+
+            function applyPrice() {
+              var opt = contenant.options[contenant.selectedIndex];
+              if (!opt) return;
+              var p = opt.getAttribute('data-prix');
+              if (p === null || p === '') return;
+              price.value = p;
+            }
+
+            contenant.addEventListener('change', applyPrice);
+          })();
+        </script>
       </div>
     </div>
   </div>

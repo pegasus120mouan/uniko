@@ -156,6 +156,16 @@
                     </a>
                   </li>
                   <li class="menu-item">
+                    <a href="{{ route('admin.orders.index') }}" class="menu-link">
+                      <div class="text-truncate">Commandes</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href="{{ route('admin.communes.index') }}" class="menu-link">
+                      <div class="text-truncate">Communes (livraison)</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
                     <a href="{{ route('admin.categories.index') }}" class="menu-link">
                       <div class="text-truncate">Catégories</div>
                     </a>
@@ -198,21 +208,19 @@
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-store"></i>
-                <div class="text-truncate" data-i18n="Front Pages">Front Pages</div>
-                <div class="badge rounded-pill bg-label-primary text-uppercase fs-tiny ms-auto">Pro</div>
+                <div class="text-truncate" data-i18n="Front Pages">Gestion de Stock</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
                   <a
-                    href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/front-pages/landing-page.html"
-                    class="menu-link"
-                    target="_blank">
-                    <div class="text-truncate" data-i18n="Landing">Landing</div>
+                    href="{{ route('admin.stock.adjust.form', ['direction' => 'in']) }}"
+                    class="menu-link">
+                    <div class="text-truncate" data-i18n="Landing">Entrée</div>
                   </a>
                 </li>
                 <li class="menu-item">
                   <a
-                    href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/front-pages/pricing-page.html"
+                    href="#"
                     class="menu-link"
                     target="_blank">
                     <div class="text-truncate" data-i18n="Pricing">Pricing</div>
@@ -247,39 +255,25 @@
 
             <!-- Apps & Pages -->
             <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Apps &amp; Pages</span>
+              <span class="menu-header-text">GESTION STOCK</span>
             </li>
             <li class="menu-item">
               <a
-                href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-email.html"
-                target="_blank"
+                href="{{ route('admin.parfums.index') }}"
                 class="menu-link">
                 <i class="menu-icon tf-icons bx bx-envelope"></i>
-                <div class="text-truncate" data-i18n="Email">Email</div>
-                <div class="badge rounded-pill bg-label-primary text-uppercase fs-tiny ms-auto">Pro</div>
+                <div class="text-truncate" data-i18n="Email">Liste des parfums</div>
               </a>
             </li>
             <li class="menu-item">
               <a
-                href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-chat.html"
-                target="_blank"
+                href="{{ route('admin.contenants.index') }}"
                 class="menu-link">
                 <i class="menu-icon tf-icons bx bx-chat"></i>
-                <div class="text-truncate" data-i18n="Chat">Chat</div>
-                <div class="badge rounded-pill bg-label-primary text-uppercase fs-tiny ms-auto">Pro</div>
+                <div class="text-truncate" data-i18n="Chat">Prix Standard</div>
               </a>
             </li>
-            <li class="menu-item">
-              <a
-                href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-calendar.html"
-                target="_blank"
-                class="menu-link">
-                <i class="menu-icon tf-icons bx bx-calendar"></i>
-                <div class="text-truncate" data-i18n="Calendar">Calendar</div>
-                <div class="badge rounded-pill bg-label-primary text-uppercase fs-tiny ms-auto">Pro</div>
-              </a>
-            </li>
-            <li class="menu-item">
+        <!--    <li class="menu-item">
               <a
                 href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-kanban.html"
                 target="_blank"
@@ -288,32 +282,40 @@
                 <div class="text-truncate" data-i18n="Kanban">Kanban</div>
                 <div class="badge rounded-pill bg-label-primary text-uppercase fs-tiny ms-auto">Pro</div>
               </a>
-            </li>
+            </li>-->
             <!-- Pages -->
             <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <a href="javascript:void(0);" class="menu-link menu-toggle d-flex align-items-center">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div class="text-truncate" data-i18n="Account Settings">Account Settings</div>
+                <div class="text-truncate" data-i18n="Account Settings">Commandes</div>
+                @if (!empty($pendingOrdersCount))
+                  <span class="badge rounded-pill bg-label-danger text-danger fs-tiny fw-semibold lh-1 ms-auto me-2 px-2 py-1">{{ (int) $pendingOrdersCount }}</span>
+                @endif
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="pages-account-settings-account.html" class="menu-link">
-                    <div class="text-truncate" data-i18n="Account">Account</div>
+                  <a href="{{ route('admin.orders.index') }}" class="menu-link">
+                    <div class="text-truncate" data-i18n="Account">Liste des commandes</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="pages-account-settings-notifications.html" class="menu-link">
-                    <div class="text-truncate" data-i18n="Notifications">Notifications</div>
+                  <a href="{{ route('admin.orders.index', ['status' => 'pending_confirmation']) }}" class="menu-link">
+                    <div class="text-truncate" data-i18n="Notifications">Commande en attente</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="pages-account-settings-connections.html" class="menu-link">
-                    <div class="text-truncate" data-i18n="Connections">Connections</div>
+                  <a href="{{ route('admin.orders.index', ['status' => 'confirmed']) }}" class="menu-link">
+                    <div class="text-truncate" data-i18n="Connections">Commande confirmée</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{ route('admin.orders.index', ['status' => 'delivered']) }}" class="menu-link">
+                    <div class="text-truncate" data-i18n="Connections">Commande livrée</div>
                   </a>
                 </li>
               </ul>
             </li>
-            <li class="menu-item">
+          <!--  <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
                 <div class="text-truncate" data-i18n="Authentications">Authentications</div>
@@ -335,8 +337,8 @@
                   </a>
                 </li>
               </ul>
-            </li>
-            <li class="menu-item">
+            </li>-->
+            <!-- <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div class="text-truncate" data-i18n="Misc">Misc</div>
@@ -353,18 +355,18 @@
                   </a>
                 </li>
               </ul>
-            </li>
+            </li>-->
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
-            <!-- Cards -->
+            <!-- Cards 
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div class="text-truncate" data-i18n="Basic">Cards</div>
               </a>
-            </li>
+            </li> -->
             <!-- User interface -->
-            <li class="menu-item">
+           <!-- <li class="menu-item">
               <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div class="text-truncate" data-i18n="User interface">User interface</div>
@@ -466,10 +468,10 @@
                   </a>
                 </li>
               </ul>
-            </li>
+            </li>-->
 
             <!-- Extended components -->
-            <li class="menu-item">
+            <!--<li class="menu-item">
               <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-copy"></i>
                 <div class="text-truncate" data-i18n="Extended UI">Extended UI</div>
@@ -493,11 +495,11 @@
                 <i class="menu-icon tf-icons bx bx-crown"></i>
                 <div class="text-truncate" data-i18n="Boxicons">Boxicons</div>
               </a>
-            </li>
+            </li>-->
 
             <!-- Forms & Tables -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Forms &amp; Tables</span></li>
-            <!-- Forms -->
+            <!-- Forms
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
@@ -534,7 +536,7 @@
                 </li>
               </ul>
             </li>
-            <!-- Form Validation -->
+            Form Validation 
             <li class="menu-item">
               <a
                 href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/form-validation.html"
@@ -544,15 +546,15 @@
                 <div class="text-truncate" data-i18n="Form Validation">Form Validation</div>
                 <div class="badge rounded-pill bg-label-primary text-uppercase fs-tiny ms-auto">Pro</div>
               </a>
-            </li>
-            <!-- Tables -->
+            </li>-->
+            <!-- Tables 
             <li class="menu-item">
               <a href="tables-basic.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-table"></i>
                 <div class="text-truncate" data-i18n="Tables">Tables</div>
               </a>
             </li>
-            <!-- Data Tables -->
+             Data Tables 
             <li class="menu-item">
               <a
                 href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/tables-datatables-basic.html"
@@ -562,8 +564,8 @@
                 <div class="text-truncate" data-i18n="Datatables">Datatables</div>
                 <div class="badge rounded-pill bg-label-primary text-uppercase fs-tiny ms-auto">Pro</div>
               </a>
-            </li>
-            <!-- Misc -->
+            </li>-->
+            <!-- Misc 
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
             <li class="menu-item">
               <a
@@ -573,8 +575,8 @@
                 <i class="menu-icon tf-icons bx bx-support"></i>
                 <div class="text-truncate" data-i18n="Support">Support</div>
               </a>
-            </li>
-            <li class="menu-item">
+            </li>-->
+           <!-- <li class="menu-item">
               <a
                 href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
                 target="_blank"
@@ -582,7 +584,7 @@
                 <i class="menu-icon tf-icons bx bx-file"></i>
                 <div class="text-truncate" data-i18n="Documentation">Documentation</div>
               </a>
-            </li>
+            </li>-->
           </ul>
         </aside>
         <!-- / Menu -->
@@ -708,14 +710,6 @@
     </div>
     <!-- / Layout wrapper -->
 
-    <div class="buy-now">
-      <a
-        href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/"
-        target="_blank"
-        class="btn btn-danger btn-buy-now"
-        >Upgrade to Pro</a
-      >
-    </div>
 
     <!-- Core JS -->
 

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Parfum;
 use App\Models\Product;
 use App\Models\StockMovement;
 use App\Services\StockService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class StockController extends Controller
@@ -69,14 +71,51 @@ class StockController extends Controller
     public function adjustForm(Request $request): View
     {
         $productId = $request->query('product_id');
+        $direction = (string) $request->query('direction', 'in');
+        $direction = in_array($direction, ['in', 'out'], true) ? $direction : 'in';
 
-        $products = Product::query()
-            ->orderBy('name')
-            ->get();
+        $hasParfumId = Schema::hasColumn('products', 'parfum_id');
+
+        if ($hasParfumId) {
+            $parfumsCount = Parfum::query()->count();
+            $linkedCount = Product::query()->whereNotNull('parfum_id')->count();
+
+            if ($parfumsCount > $linkedCount) {
+                $existingParfumIds = Product::query()->whereNotNull('parfum_id')->pluck('parfum_id')->all();
+
+                Parfum::query()
+                    ->whereNotIn('id', $existingParfumIds)
+                    ->orderBy('nom')
+                    ->get()
+                    ->each(function (Parfum $parfum) {
+                        Product::query()->create([
+                            'parfum_id' => $parfum->id,
+                            'category_id' => null,
+                            'name' => $parfum->nom,
+                            'brand' => 'Parfum',
+                            'price' => 0,
+                            'quantity' => 0,
+                            'low_stock_threshold' => 5,
+                            'description' => null,
+                            'is_active' => true,
+                        ]);
+                    });
+            }
+
+            $products = Product::query()
+                ->whereNotNull('parfum_id')
+                ->orderBy('name')
+                ->get();
+        } else {
+            $products = Product::query()
+                ->orderBy('name')
+                ->get();
+        }
 
         return view('stock.adjust', [
             'products' => $products,
             'productId' => $productId,
+            'direction' => $direction,
         ]);
     }
 
