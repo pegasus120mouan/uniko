@@ -23,7 +23,11 @@ jobs:
             git config --global --add safe.directory "${{ secrets.APP_DIR }}"
 
             # Configure Git credentials for private repo
-            git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/${{ secrets.GIT_REPO }}.git
+            REPO_URL="https://github.com/${{ github.repository }}.git"
+            if [ -n "${{ secrets.GH_TOKEN }}" ]; then
+              REPO_URL="https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git"
+            fi
+            git remote set-url origin "$REPO_URL"
 
             git fetch --all
             git reset --hard origin/main
