@@ -61,7 +61,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     })->name('home');
 
     Route::resource('categories', CategoryController::class)->except(['show']);
-    Route::resource('parfums', ParfumController::class)->except(['show']);
+    Route::resource('parfums', ParfumController::class);
+    Route::post('parfums/{parfum}/prices', [ParfumController::class, 'storePrice'])->name('parfums.prices.store');
+    Route::delete('parfums/{parfum}/prices/{price}', [ParfumController::class, 'destroyPrice'])->name('parfums.prices.destroy');
     Route::resource('contenants', ContenantController::class)->except(['show']);
     Route::resource('communes', CommuneController::class)->except(['show']);
     Route::resource('products', ProductController::class)->except(['show']);

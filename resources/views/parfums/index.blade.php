@@ -36,6 +36,7 @@
             <tr>
               <th>Code</th>
               <th>Nom</th>
+              <th>Type</th>
               <th class="text-end">Actions</th>
             </tr>
           </thead>
@@ -43,9 +44,21 @@
             @forelse ($parfums as $parfum)
               <tr>
                 <td><span class="badge bg-label-primary">{{ $parfum->code }}</span></td>
-                <td class="fw-medium">{{ $parfum->nom }}</td>
+                <td class="fw-medium">
+                  <a href="{{ route('admin.parfums.show', $parfum) }}" class="text-body">{{ $parfum->nom }}</a>
+                </td>
+                <td>
+                  @if ($parfum->type === 'luxe')
+                    <span class="badge bg-label-warning">Luxe</span>
+                  @else
+                    <span class="badge bg-label-info">Classics</span>
+                  @endif
+                </td>
                 <td class="text-end">
                   <div class="btn-group" role="group" aria-label="Actions">
+                    <a href="{{ route('admin.parfums.show', $parfum) }}" class="btn btn-sm btn-icon btn-outline-info" title="Voir les prix">
+                      <i class="bx bx-show"></i>
+                    </a>
                     <a href="{{ route('admin.parfums.edit', $parfum) }}" class="btn btn-sm btn-icon btn-outline-primary" title="Modifier">
                       <i class="bx bx-edit"></i>
                     </a>
@@ -61,7 +74,7 @@
               </tr>
             @empty
               <tr>
-                <td colspan="3" class="text-center text-body-secondary">Aucun parfum.</td>
+                <td colspan="4" class="text-center text-body-secondary">Aucun parfum.</td>
               </tr>
             @endforelse
           </tbody>

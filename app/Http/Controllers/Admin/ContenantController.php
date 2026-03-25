@@ -13,12 +13,16 @@ class ContenantController extends Controller
     public function index(Request $request): View
     {
         $q = (string) $request->query('q', '');
+        $type = $request->query('type');
 
         $contenants = Contenant::query()
             ->when($q !== '', function ($query) use ($q) {
                 $query->where('type_contenant', 'like', "%{$q}%")
                     ->orWhere('ml', 'like', "%{$q}%")
                     ->orWhere('prix', 'like', "%{$q}%");
+            })
+            ->when($type !== null && in_array($type, ['classics', 'luxe']), function ($query) use ($type) {
+                $query->where('type', $type);
             })
             ->orderBy('type_contenant')
             ->orderBy('ml')
@@ -28,6 +32,7 @@ class ContenantController extends Controller
         return view('contenants.index', [
             'contenants' => $contenants,
             'q' => $q,
+            'type' => $type,
         ]);
     }
 
@@ -41,6 +46,7 @@ class ContenantController extends Controller
         $validated = $request->validate([
             'ml' => ['required', 'integer', 'min:1'],
             'type_contenant' => ['required', 'string', 'max:100'],
+            'type' => ['required', 'string', 'in:classics,luxe'],
             'prix' => ['required', 'integer', 'min:0'],
         ]);
 
@@ -63,6 +69,7 @@ class ContenantController extends Controller
         $validated = $request->validate([
             'ml' => ['required', 'integer', 'min:1'],
             'type_contenant' => ['required', 'string', 'max:100'],
+            'type' => ['required', 'string', 'in:classics,luxe'],
             'prix' => ['required', 'integer', 'min:0'],
         ]);
 

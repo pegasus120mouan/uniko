@@ -36,6 +36,7 @@
             <tr>
               <th>ML</th>
               <th>Type de contenant</th>
+              <th>Type parfum</th>
               <th class="text-end">Prix</th>
               <th class="text-end">Actions</th>
             </tr>
@@ -45,6 +46,13 @@
               <tr>
                 <td><span class="badge bg-label-primary">{{ $c->ml }} ml</span></td>
                 <td class="fw-medium">{{ $c->type_contenant }}</td>
+                <td>
+                  @if ($c->type === 'luxe')
+                    <span class="badge bg-label-warning">Luxe</span>
+                  @else
+                    <span class="badge bg-label-info">Classics</span>
+                  @endif
+                </td>
                 <td class="text-end">{{ number_format((int) $c->prix, 0, ',', ' ') }}</td>
                 <td class="text-end">
                   <div class="btn-group" role="group" aria-label="Actions">
@@ -63,7 +71,7 @@
               </tr>
             @empty
               <tr>
-                <td colspan="4" class="text-center text-body-secondary">Aucun prix standard.</td>
+                <td colspan="5" class="text-center text-body-secondary">Aucun prix standard.</td>
               </tr>
             @endforelse
           </tbody>

@@ -33,6 +33,17 @@
           </div>
 
           <div class="mb-3">
+            <label class="form-label" for="type">Type de parfum</label>
+            <select id="type" name="type" class="form-select @error('type') is-invalid @enderror" required>
+              <option value="classics" {{ old('type', $contenant->type) === 'classics' ? 'selected' : '' }}>Classics</option>
+              <option value="luxe" {{ old('type', $contenant->type) === 'luxe' ? 'selected' : '' }}>Luxe</option>
+            </select>
+            @error('type')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="mb-3">
             <label class="form-label" for="prix">Prix</label>
             <input type="number" id="prix" name="prix" value="{{ old('prix', $contenant->prix) }}" class="form-control @error('prix') is-invalid @enderror" min="0" required>
             @error('prix')

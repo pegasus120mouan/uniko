@@ -257,22 +257,62 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">GESTION STOCK</span>
             </li>
-            <li class="menu-item">
-              <a
-                href="{{ route('admin.parfums.index') }}"
-                class="menu-link">
-                <i class="menu-icon tf-icons bx bx-envelope"></i>
-                <div class="text-truncate" data-i18n="Email">Liste des parfums</div>
+
+
+
+        <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-droplet"></i>
+                <div class="text-truncate" data-i18n="Front Pages">Parfums</div>
               </a>
-            </li>
-            <li class="menu-item">
-              <a
-                href="{{ route('admin.contenants.index') }}"
-                class="menu-link">
-                <i class="menu-icon tf-icons bx bx-chat"></i>
-                <div class="text-truncate" data-i18n="Chat">Prix Standard</div>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a
+                    href="{{ route('admin.parfums.index') }}"
+                    class="menu-link">
+                    <div class="text-truncate" data-i18n="Email">Liste des parfums</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a
+                    href="{{ route('admin.parfums.index', ['type' => 'classics']) }}"
+                    class="menu-link">
+                    <div class="text-truncate" data-i18n="Pricing">Classics</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a
+                    href="{{ route('admin.parfums.index', ['type' => 'luxe']) }}"
+                    class="menu-link">
+                    <div class="text-truncate" data-i18n="Payment">Luxe</div>
+                  </a>
+                </li>
+              </ul>
+        </li>
+
+
+         <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-purchase-tag"></i>
+                <div class="text-truncate" data-i18n="Front Pages">Prix</div>
               </a>
-            </li>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a
+                    href="{{ route('admin.contenants.index', ['type' => 'classics']) }}"
+                    class="menu-link">
+                    <div class="text-truncate" data-i18n="Email">Standard</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a
+                    href="{{ route('admin.contenants.index', ['type' => 'luxe']) }}"
+                    class="menu-link">
+                    <div class="text-truncate" data-i18n="Pricing">Luxe</div>
+                  </a>
+                </li>
+              </ul>
+        </li>
         <!--    <li class="menu-item">
               <a
                 href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-kanban.html"

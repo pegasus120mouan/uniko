@@ -31,6 +31,17 @@
             @enderror
           </div>
 
+          <div class="mb-3">
+            <label class="form-label" for="type">Type</label>
+            <select id="type" name="type" class="form-select @error('type') is-invalid @enderror" required>
+              <option value="classics" {{ old('type', 'classics') === 'classics' ? 'selected' : '' }}>Classics</option>
+              <option value="luxe" {{ old('type') === 'luxe' ? 'selected' : '' }}>Luxe</option>
+            </select>
+            @error('type')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
           <button class="btn btn-primary" type="submit">Enregistrer</button>
         </form>
       </div>
