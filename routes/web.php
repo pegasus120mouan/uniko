@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommuneController;
 use App\Http\Controllers\Admin\ContenantController;
+use App\Http\Controllers\Admin\GrossisteController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ParfumController;
 use App\Http\Controllers\Admin\ProductController;
@@ -88,4 +89,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/reports/sales.pdf', [ReportsController::class, 'salesPdf'])->name('reports.sales.pdf');
 
     Route::get('/reports/revenue', [ReportsController::class, 'revenue'])->name('reports.revenue');
+
+    // Grossistes
+    Route::resource('grossistes', GrossisteController::class);
+    Route::post('grossistes/{grossiste}/prices', [GrossisteController::class, 'storePrice'])->name('grossistes.prices.store');
+    Route::delete('grossistes/{grossiste}/prices/{price}', [GrossisteController::class, 'destroyPrice'])->name('grossistes.prices.destroy');
 });

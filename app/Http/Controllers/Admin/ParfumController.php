@@ -44,11 +44,20 @@ class ParfumController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'code' => ['required', 'string', 'max:10', 'unique:parfums,code'],
-            'nom' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'string', 'in:classics,luxe'],
+        // Trim and normalize the name
+        $request->merge([
+            'nom' => trim($request->input('nom')),
         ]);
+
+        $validated = $request->validate([
+            'nom' => ['required', 'string', 'max:255', 'unique:parfums,nom'],
+            'type' => ['required', 'string', 'in:classics,luxe'],
+        ], [
+            'nom.unique' => 'Ce parfum existe déjà.',
+        ]);
+
+        // Auto-generate code
+        $validated['code'] = $this->generateParfumCode($validated['type']);
 
         $parfum = Parfum::create($validated);
 
@@ -181,5 +190,28 @@ class ParfumController extends Controller
         return redirect()
             ->route('admin.parfums.show', $parfum)
             ->with('status', 'Prix supprimé avec succès.');
+    }
+
+    private function generateParfumCode(string $type): string
+    {
+        // Prefix: C for Classics, L for Luxe
+        $prefix = $type === 'luxe' ? 'L' : 'C';
+
+        // Get the last code with this prefix
+        $lastParfum = Parfum::query()
+            ->where('code', 'like', $prefix . '%')
+            ->orderByRaw('CAST(SUBSTRING(code, 2) AS UNSIGNED) DESC')
+            ->first();
+
+        if ($lastParfum) {
+            // Extract number and increment
+            $lastNumber = (int) substr($lastParfum->code, 1);
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        // Format: C001, L001, etc.
+        return $prefix . str_pad((string) $newNumber, 3, '0', STR_PAD_LEFT);
     }
 }

@@ -397,14 +397,13 @@
               </ul>
             </li>-->
             <!-- Components -->
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
-            <!-- Cards 
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Espace Grossiste</span></li>
             <li class="menu-item">
-              <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div class="text-truncate" data-i18n="Basic">Cards</div>
+              <a href="{{ route('admin.grossistes.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-store"></i>
+                <div class="text-truncate" data-i18n="Basic">Grossistes</div>
               </a>
-            </li> -->
+            </li> 
             <!-- User interface -->
            <!-- <li class="menu-item">
               <a href="javascript:void(0)" class="menu-link menu-toggle">

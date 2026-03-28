@@ -16,14 +16,6 @@
           @csrf
 
           <div class="mb-3">
-            <label class="form-label" for="code">Code</label>
-            <input type="text" id="code" name="code" value="{{ old('code') }}" class="form-control @error('code') is-invalid @enderror" maxlength="10" required>
-            @error('code')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="mb-3">
             <label class="form-label" for="nom">Nom</label>
             <input type="text" id="nom" name="nom" value="{{ old('nom') }}" class="form-control @error('nom') is-invalid @enderror" required>
             @error('nom')
